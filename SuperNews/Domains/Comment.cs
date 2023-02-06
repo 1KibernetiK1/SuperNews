@@ -12,6 +12,6 @@ namespace SuperNews.Domains
 
         public string Description { get; set; }
 
-        public virtual ICollection<News> ArticlesOfComments { get; set; }
+        public virtual ICollection<News> NewsOfComments { get; set; }
     }
 }

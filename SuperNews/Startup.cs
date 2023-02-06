@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SuperNews.Data;
+using SuperNews.DataAccessLayer;
+using SuperNews.Map;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,21 @@ namespace SuperNews
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddMvc();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //services.AddTransient<IRepository<Product>, ProductSqlRepository>();
+            //services.AddTransient<IRepository<Brand>, BrandSqlRepository>();
+            //services.AddTransient<IRepository<Category>, CategorySqlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +75,15 @@ namespace SuperNews
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                DataSeeder.SeedRoles(roleManager);
+                DataSeeder.SeedUsers(userManager);
+
+                MapModels.InitNewsMapping();
+            }
         }
     }
 }

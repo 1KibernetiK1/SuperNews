@@ -17,7 +17,7 @@ namespace SuperNews.Domains
 
         public string ImageUrl { get; set; }
 
-        public virtual Rubric ArticleRubric { get; set; }
+        public virtual Rubric NewsRubric { get; set; }
 
         //public Comment Comments { get; set; }
     }
