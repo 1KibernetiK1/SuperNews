@@ -54,6 +54,28 @@ namespace SuperNews.Controllers
             return View(name);
         }
 
+        public IActionResult CreateUser() => View();
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(RegisterModel model)
+        {
+            var manager = new IdentityUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                EmailConfirmed = true
+            };
+
+            IdentityResult userResult = _userManager.CreateAsync(manager, model.Password).Result;
+
+            if (userResult.Succeeded)
+            {
+                userResult = _userManager.AddToRoleAsync(manager, model.Role).Result;
+            }
+            return RedirectToAction("UserList");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
