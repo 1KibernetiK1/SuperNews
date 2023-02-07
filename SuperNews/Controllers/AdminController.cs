@@ -87,6 +87,16 @@ namespace SuperNews.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+            }
+            return RedirectToAction("UserList");
+        }
+
         public async Task<IActionResult> UserList()
         {
             var users = await _userManager.Users.ToListAsync();

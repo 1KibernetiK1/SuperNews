@@ -17,7 +17,12 @@
                 <td>@user.Email</td>
                 <td>@string.Join(" , ", user.Roles.ToList())</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="Admin" asp-action="Edit" asp-route-userId="@user.UserId">Manage Roles</a>
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="Edit" asp-route-userId="@user.UserId">Изменить роль</a>
+                  @*  <form asp-action="DeleteUser" asp-route-userId="@user.UserId">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Удалить
+                    </button>
+                    </form>*@
                 </td>
             </tr>
         }
