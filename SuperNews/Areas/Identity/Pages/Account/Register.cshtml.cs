@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SuperNews.UsersRoles;
 
 namespace SuperNews.Areas.Identity.Pages.Account
 {
@@ -80,7 +81,7 @@ namespace SuperNews.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    result = await _userManager.AddToRoleAsync(user, "Guest");
+                    result = await _userManager.AddToRoleAsync(user, AppRoles.Guest);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
