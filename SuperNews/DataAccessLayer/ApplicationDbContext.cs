@@ -6,7 +6,7 @@ namespace SuperNews.DataAccessLayer
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<News> Articles { get; set; }
+        public DbSet<News> News { get; set; }
 
         public DbSet<Rubric> Rubrics { get; set; }
 

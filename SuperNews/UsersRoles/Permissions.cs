@@ -16,11 +16,10 @@ namespace SuperNews.UsersRoles
         }
         public static class News
         {
-            public const string View = "Permissions.Products.View";
-            public const string Create = "Permissions.Products.Create";
-            public const string Edit = "Permissions.Products.Edit";
-            public const string Delete = "Permissions.Products.Delete";
-            public const string EditPrice = "Permissions.Products.EditPrice";
+            public const string View = "Permissions.News.View";
+            public const string Create = "Permissions.News.Create";
+            public const string Edit = "Permissions.News.Edit";
+            public const string Delete = "Permissions.News.Delete";
         }
     }
 }

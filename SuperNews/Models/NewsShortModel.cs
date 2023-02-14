@@ -21,5 +21,12 @@ namespace SuperNews.Models
         public NewsShortModel()
         { }
 
+        public NewsShortModel(News news)
+        {
+            NewsId = news.NewsId;
+            Title = news.Title;
+            CreationDate = news.CreationDate;
+        }
+
     }
 }

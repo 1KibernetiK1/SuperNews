@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SuperNews.Abstract;
 using SuperNews.DataAccessLayer;
+using SuperNews.Domains;
 using SuperNews.Map;
 using SuperNews.UsersRoles;
 using System;
@@ -50,9 +52,7 @@ namespace SuperNews
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddTransient<IRepository<Product>, ProductSqlRepository>();
-            //services.AddTransient<IRepository<Brand>, BrandSqlRepository>();
-            //services.AddTransient<IRepository<Category>, CategorySqlRepository>();
+            services.AddTransient<IRepository<News>, NewsSqlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
