@@ -66,14 +66,14 @@ namespace SuperNews.Controllers
             return View(model);
         }
 
-        public IActionResult DeleteArticle(long id)
+        public IActionResult Delete(long id)
         {
             _repositoryNews.Delete(id);
 
             return RedirectToAction("List", "News");
         }
 
-        public IActionResult EditArticle(long id)
+        public IActionResult Edit(long id)
         {
             var entity = _repositoryNews.Read(id);
             var model = entity.Adapt<NewsViewModel>();
@@ -82,7 +82,7 @@ namespace SuperNews.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditArticle(NewsViewModel model)
+        public IActionResult Edit(NewsViewModel model)
         {
             News manager = new News()
             {
