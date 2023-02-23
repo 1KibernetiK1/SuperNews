@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SuperNews.Migrations
 {
-    public partial class Addmig : Migration
+    public partial class addmig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -179,7 +179,7 @@ namespace SuperNews.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Articles",
+                name: "News",
                 columns: table => new
                 {
                     NewsId = table.Column<long>(nullable: false)
@@ -188,35 +188,26 @@ namespace SuperNews.Migrations
                     Description = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
-                    ArticleRubricRubricId = table.Column<long>(nullable: true),
+                    NewsRubricRubricId = table.Column<long>(nullable: true),
+                    RubricId = table.Column<int>(nullable: true),
                     CommentId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.NewsId);
+                    table.PrimaryKey("PK_News", x => x.NewsId);
                     table.ForeignKey(
-                        name: "FK_Articles_Rubrics_ArticleRubricRubricId",
-                        column: x => x.ArticleRubricRubricId,
-                        principalTable: "Rubrics",
-                        principalColumn: "RubricId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Articles_Comments_CommentId",
+                        name: "FK_News_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "CommentId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_News_Rubrics_NewsRubricRubricId",
+                        column: x => x.NewsRubricRubricId,
+                        principalTable: "Rubrics",
+                        principalColumn: "RubricId",
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Articles_ArticleRubricRubricId",
-                table: "Articles",
-                column: "ArticleRubricRubricId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Articles_CommentId",
-                table: "Articles",
-                column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -256,13 +247,20 @@ namespace SuperNews.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_News_CommentId",
+                table: "News",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_News_NewsRubricRubricId",
+                table: "News",
+                column: "NewsRubricRubricId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Articles");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -279,16 +277,19 @@ namespace SuperNews.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Rubrics");
-
-            migrationBuilder.DropTable(
-                name: "Comments");
+                name: "News");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Rubrics");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authorization;
 @using SuperNews.UsersRoles;
-@model IEnumerable<SuperNews.Models.NewsShortModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model SuperNews.Models.NewsListViewModel
 @inject IAuthorizationService AuthorizationService
 
 @{
@@ -8,6 +9,18 @@
 }
 
 <h1>List</h1>
+
+<form method="get">
+    <div>
+        <label>Имя: </label>
+        <input asp-for="Name" />
+
+        <label>Компания: </label>
+        <select name="company" asp-items="Model.Rubrics"></select>
+
+        <input type="submit" value="Фильтр" />
+    </div>
+</form>
 
 @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Create)).Result.Succeeded)
 {
@@ -19,16 +32,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Название новости
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
+                Дата создания новости
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.News) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

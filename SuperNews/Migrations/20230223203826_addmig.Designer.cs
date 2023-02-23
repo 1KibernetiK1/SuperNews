@@ -10,8 +10,8 @@ using SuperNews.DataAccessLayer;
 namespace SuperNews.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230206163910_Addmig")]
-    partial class Addmig
+    [Migration("20230223203826_addmig")]
+    partial class addmig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -243,9 +243,6 @@ namespace SuperNews.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ArticleRubricRubricId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("CommentId")
                         .HasColumnType("bigint");
 
@@ -258,16 +255,22 @@ namespace SuperNews.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("NewsRubricRubricId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("RubricId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NewsId");
 
-                    b.HasIndex("ArticleRubricRubricId");
-
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Articles");
+                    b.HasIndex("NewsRubricRubricId");
+
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("SuperNews.Domains.Rubric", b =>
@@ -338,13 +341,13 @@ namespace SuperNews.Migrations
 
             modelBuilder.Entity("SuperNews.Domains.News", b =>
                 {
-                    b.HasOne("SuperNews.Domains.Rubric", "ArticleRubric")
-                        .WithMany("ArticlesOfRubrics")
-                        .HasForeignKey("ArticleRubricRubricId");
-
                     b.HasOne("SuperNews.Domains.Comment", null)
-                        .WithMany("ArticlesOfComments")
+                        .WithMany("NewsOfComments")
                         .HasForeignKey("CommentId");
+
+                    b.HasOne("SuperNews.Domains.Rubric", "NewsRubric")
+                        .WithMany("NewsOfRubrics")
+                        .HasForeignKey("NewsRubricRubricId");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,9 +1,13 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SuperNews.Abstract;
+using SuperNews.DataAccessLayer;
 using SuperNews.Domains;
 using SuperNews.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SuperNews.Controllers
@@ -12,21 +16,40 @@ namespace SuperNews.Controllers
     public class NewsController : Controller
     {
         private readonly IRepository<News> _repositoryNews;
+        private readonly ApplicationDbContext _context;
 
-        public NewsController(IRepository<News> repositoryArticle)
+        public NewsController(IRepository<News> repositoryArticle, ApplicationDbContext context)
         {
             _repositoryNews = repositoryArticle;
+            _context = context; 
         }
 
-        public IActionResult List()
+        public IActionResult List(int? Rubric, string? name)
         {
-            var ArticleSample = _repositoryNews
-                .GetList()
-                .OrderBy(p => p.NewsId)
-                .Take(20)
-                .Select(e => new NewsShortModel(e));
+            IQueryable<News> news = _context.News.Include(p => p.NewsRubric);
 
-            return View(ArticleSample);
+            if (Rubric != null && Rubric != 0)
+            {
+                news = news.Where(p => p.RubricId == Rubric);
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                news = news.Where(p => p.Title!.Contains(name));
+            }
+
+            List<Rubric> companies = _context.Rubrics.ToList();
+
+            // устанавливаем начальный элемент, который позволит выбрать всех
+            companies.Insert(0, new Rubric { Name = "Все", RubricId = 0 });
+
+            NewsListViewModel viewModel = new NewsListViewModel
+            {
+                News = news.ToList(),
+                Rubrics = new SelectList(companies, "RubricId", "Name", Rubric),
+                Name = name
+            };
+            return View(viewModel);
+
         }
 
         public IActionResult Details(long id)

@@ -8,7 +8,8 @@ namespace SuperNews.Models
 {
     public class NewsViewModel
     {
-        public Rubric Rubric { get; set; }
+        [Display(Name = "Рубрика")]
+        public string Rubric { get; set; }
 
         [HiddenInput(DisplayValue = false)]
         public long? NewsId { get; set; }

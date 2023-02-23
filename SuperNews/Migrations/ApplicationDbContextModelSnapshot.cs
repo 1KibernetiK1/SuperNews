@@ -256,6 +256,9 @@ namespace SuperNews.Migrations
                     b.Property<long?>("NewsRubricRubricId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("RubricId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 

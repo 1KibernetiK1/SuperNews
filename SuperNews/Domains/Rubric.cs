@@ -10,8 +10,8 @@ namespace SuperNews.Domains
         [Key]
         public long RubricId { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public virtual ICollection<News> NewsOfRubrics { get; set; }
+        public virtual List<News> NewsOfRubrics { get; set; }
     }
 }

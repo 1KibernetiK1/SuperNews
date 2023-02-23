@@ -9,7 +9,7 @@ namespace SuperNews.Domains
         [Key]
         public long? NewsId { get; set; }
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         public string Description { get; set; }
 
@@ -17,7 +17,10 @@ namespace SuperNews.Domains
 
         public string ImageUrl { get; set; }
 
-        public virtual Rubric NewsRubric { get; set; }
+
+        public virtual Rubric? NewsRubric { get; set; }
+
+        public int? RubricId { get; set; }
 
         //public Comment Comments { get; set; }
     }
