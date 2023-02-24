@@ -76,6 +76,7 @@ namespace SuperNews.Controllers
                 {
                     NewsId = model.NewsId,
                     Title = model.Title,
+                    RubricId = model.Rubric,
                     CreationDate = model.CreationDate,
                     Description = model.Description,
                     ImageUrl = model.ImageUrl
@@ -111,6 +112,7 @@ namespace SuperNews.Controllers
             {
                 NewsId = model.NewsId,
                 Title = model.Title,
+                RubricId = model.Rubric,
                 CreationDate = model.CreationDate,
                 Description = model.Description,
                 ImageUrl = model.ImageUrl
