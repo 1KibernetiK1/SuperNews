@@ -58,6 +58,8 @@ namespace SuperNews.DataAccessLayer
         {
             var entry = _context.News.Find(model.NewsId);
             _context.Entry(entry).CurrentValues.SetValues(model);
+            entry.NewsRubric = model.NewsRubric;
+            entry.RubricId = model.RubricId;
             _context.SaveChanges();
         }
     }
