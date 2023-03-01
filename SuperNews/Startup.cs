@@ -75,6 +75,7 @@ namespace SuperNews
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
 
@@ -92,6 +93,7 @@ namespace SuperNews
 
             using (var scope = app.ApplicationServices.CreateScope())
             {
+                DataSeeder.SeedNews(scope.ServiceProvider);
                 DataSeeder.SeedRoles(roleManager);
                 DataSeeder.SeedUsers(userManager);
 

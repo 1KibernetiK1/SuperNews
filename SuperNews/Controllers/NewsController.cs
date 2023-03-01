@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SuperNews.Abstract;
+using SuperNews.BusinessLogic;
 using SuperNews.DataAccessLayer;
 using SuperNews.Domains;
+using SuperNews.Helpers;
 using SuperNews.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,65 @@ namespace SuperNews.Controllers
         {
             _repositoryNews = repositoryArticle;
             _context = context; 
+        }
+
+        public IActionResult BookmarksView(string urlReturn)
+        {
+            ViewBag.UrlReturn = urlReturn;
+            var bookmarks = HttpContext.LoadFromSession<Bookmarks>();
+            return View(bookmarks);
+        }
+
+        public IActionResult DecreaseNews(long id, string urlReturn)
+        {
+            var product = _repositoryNews.Read(id);
+            if (product == null)
+                return View("Error");
+
+            var model = product.Adapt<NewsViewModel>();
+
+
+            // сохранить продукт в корзину
+            var cart = HttpContext.LoadFromSession<Bookmarks>();
+            cart.RemoveNews(model);
+            HttpContext.SaveToSession(cart);
+
+            return new RedirectResult(urlReturn);
+            // return View("CartView", cart);
+        }
+
+        public IActionResult IncreaseNews(long id, string urlReturn)
+        {
+            var product = _repositoryNews.Read(id);
+            if (product == null)
+                return View("Error");
+
+            var model = product.Adapt<NewsViewModel>();
+
+            // сохранить продукт в корзину
+            var cart = HttpContext.LoadFromSession<Bookmarks>();
+            cart.AddNews(model);
+            HttpContext.SaveToSession(cart);
+
+            return new RedirectResult(urlReturn);
+            // return View("CartView", cart);
+        }
+
+        public IActionResult AddToBookmarks(long id, string urlReturn)
+        {
+            var product = _repositoryNews.Read(id);
+            if (product == null)
+                return View("Error");
+
+            var model = product.Adapt<NewsViewModel>();
+
+            // сохранить продукт в корзину
+            var cart = HttpContext.LoadFromSession<Bookmarks>();
+            cart.AddNews(model);
+            HttpContext.SaveToSession(cart);
+
+            return new RedirectResult(urlReturn);
+            // return View("CartView", cart);
         }
 
         public IActionResult List(int? Rubric, string? name)

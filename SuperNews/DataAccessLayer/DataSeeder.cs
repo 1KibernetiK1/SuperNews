@@ -1,13 +1,35 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using SuperNews.Abstract;
 using SuperNews.UsersRoles;
+using System.Collections.Generic;
+using System.IO;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using SuperNews.Domains;
 
 namespace SuperNews.DataAccessLayer
 {
     public static class DataSeeder
     {
+        public static void SeedNews(IServiceProvider provider)
+        {
+            var productRepository = provider
+                .GetRequiredService<IRepository<News>>();
+
+            if (productRepository.GetList().Count() > 0)
+                return;
+
+            var files = new DirectoryInfo("ProductsJson")
+                .GetFiles("*.json");
+
+         
+            
+        }
+
         public static void SeedUsers(UserManager<IdentityUser> userManager)
         {
             if (userManager.Users.Count() > 0) return;
