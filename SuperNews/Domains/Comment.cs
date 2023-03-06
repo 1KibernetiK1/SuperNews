@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,8 +11,11 @@ namespace SuperNews.Domains
         [Key]
         public long? CommentId { get; set; }
 
-        public string Description { get; set; }
+        public int ParentId { get; set; }
 
-        public virtual ICollection<News> NewsOfComments { get; set; }
+        public string CommentText { get; set; }
+
+        public string Username { get; set; }
+        public DateTime CommentDate { get; set; }
     }
 }

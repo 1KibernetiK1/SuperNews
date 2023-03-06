@@ -24,7 +24,7 @@
         <label>Компания: </label>
         <select name="Rubric" asp-items="Model.Rubrics"></select>
 
-        <input type="submit" value="Фильтр" />
+        <input type="submit" value="Поиск" />
     </div>
 </form>
 
@@ -64,11 +64,14 @@
                        class="btn btn-light">
                         Отправить в закладки
                     </a>
+                    <a asp-action="CommentIndex"
+                   asp-controller="News" 
+                    class="btn btn-light">Написать комментарии</a>
             </td>
             <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.NewsId }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.NewsId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.NewsId })
+                    <a asp-action="Edit" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-light">Изменить</a>
+                    <a asp-action="Details" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-light">Подробнее</a>
+                    <a asp-action="Delete" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-danger">Удалить</a>
             </td>
         </tr>
 }

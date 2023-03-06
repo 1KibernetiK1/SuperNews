@@ -1,15 +1,19 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SuperNews.Abstract;
 using SuperNews.BusinessLogic;
 using SuperNews.DataAccessLayer;
 using SuperNews.Domains;
 using SuperNews.Helpers;
 using SuperNews.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SuperNews.Controllers
@@ -19,11 +23,15 @@ namespace SuperNews.Controllers
     {
         private readonly IRepository<News> _repositoryNews;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<NewsController> _logger;
 
-        public NewsController(IRepository<News> repositoryArticle, ApplicationDbContext context)
+        public NewsController(IRepository<News> repositoryArticle, ApplicationDbContext context, UserManager<IdentityUser> userManager, ILogger<NewsController> logger)
         {
             _repositoryNews = repositoryArticle;
             _context = context; 
+            _userManager = userManager;
+            _logger = logger; 
         }
 
         public IActionResult BookmarksView(string urlReturn)
@@ -84,6 +92,8 @@ namespace SuperNews.Controllers
             return new RedirectResult(urlReturn);
             // return View("CartView", cart);
         }
+
+
 
         public IActionResult List(int? Rubric, string? name)
         {
@@ -188,5 +198,39 @@ namespace SuperNews.Controllers
 
             return View();
         }
+
+        public IActionResult CommentIndex()
+        {
+            ViewBag.Comment = _context.Comments.OrderBy(x => x.CommentDate).ToList();
+            var model = _context.Comments.OrderBy(x => x.CommentDate).FirstOrDefault();
+            return View(model);
+        }
+
+        public IActionResult CreateComment(Comment comment)
+        {
+            var curentuser = _userManager.GetUserName(User);
+            if (ModelState.IsValid)
+            {
+                comment = new Comment()
+                {
+                    CommentText = comment.CommentText,
+                    CommentDate = DateTime.Now,
+                    Username = curentuser,
+                };
+                _context.Add(comment);
+                _context.SaveChanges();
+                ModelState.Clear();
+
+            }
+            return RedirectToAction("CommentIndex", "News");
+
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
     }
 }

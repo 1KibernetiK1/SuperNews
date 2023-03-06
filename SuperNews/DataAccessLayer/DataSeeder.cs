@@ -23,8 +23,7 @@ namespace SuperNews.DataAccessLayer
             if (productRepository.GetList().Count() > 0)
                 return;
 
-            var files = new DirectoryInfo("ProductsJson")
-                .GetFiles("*.json");
+        
 
          
             

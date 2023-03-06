@@ -5,16 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SuperNews.Models
 {
-    public class CommentsViewModel
+    public class CommentsViewModel : Comment 
     {
-        [HiddenInput(DisplayValue = false)]
-        public long? CommentId { get; set; }
-
-        [Required(ErrorMessage = "Напишите сообщение")]
-        [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
-
-        public virtual ICollection<News> ArticlesOfComments { get; set; }
+        public int commentId { get; set; }
+        //public DateTime CommentDate { get; set; }
+        public string strCommentDate { get {; return this.CommentDate.ToString("dd-MM-yyyy"); } }
 
         public CommentsViewModel()
         {

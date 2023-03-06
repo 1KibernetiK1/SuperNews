@@ -30,9 +30,8 @@ namespace SuperNews.Map
 
             TypeAdapterConfig<CommentsViewModel, Comment>
                 .NewConfig()
-                .Map(dest => dest.CommentId, src => src.CommentId)
-                .Map(dest => dest.Description, src => src.Description)
-                .Map(dest => dest.NewsOfComments, src => src.ArticlesOfComments);
+                .Map(dest => dest.CommentId, src => src.CommentId);
+               
         }
     }
 }
