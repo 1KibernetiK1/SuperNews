@@ -3,11 +3,14 @@ using SuperNews.Domains;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace SuperNews.Models
 {
     public class NewsViewModel
     {
+        public IFormFile ImageFile { get; set; }
+
         [Display(Name = "Рубрика")]
         public int Rubric { get; set; }
 

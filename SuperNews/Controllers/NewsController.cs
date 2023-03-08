@@ -14,6 +14,7 @@ using SuperNews.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace SuperNews.Controllers
@@ -141,6 +142,8 @@ namespace SuperNews.Controllers
         [HttpPost]
         public IActionResult Create(NewsViewModel model)
         {
+            UploadImage(model);
+
             if (ModelState.IsValid)
             {
                 News article = new News()
@@ -179,6 +182,8 @@ namespace SuperNews.Controllers
         [HttpPost]
         public IActionResult Edit(NewsViewModel model)
         {
+            UploadImage(model);
+
             News manager = new News()
             {
                 NewsId = model.NewsId,
@@ -226,10 +231,31 @@ namespace SuperNews.Controllers
 
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+       
+
+        private void UploadImage(NewsViewModel editModel)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (editModel.ImageFile == null)
+            {
+                Debug.WriteLine("картинка не найдена");
+                return;
+            }
+
+            string ext = Path.GetExtension(editModel.ImageFile.FileName);
+            string uniqueName = Guid.NewGuid().ToString() + ext;
+            string filename = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                @"wwwroot\NewsImages",
+                uniqueName);
+
+            // сохраняем физический файл на сервер
+            using (var stream = System.IO.File.Create(filename))
+            {
+                editModel.ImageFile.CopyTo(stream);
+            }
+
+            // в БД заменить на новое имя файла
+            editModel.ImageUrl = uniqueName;
         }
 
     }

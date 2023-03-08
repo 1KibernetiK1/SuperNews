@@ -14,7 +14,7 @@
     : $"Новости ({Model.Rubrics})";
 }
 
-<h1>List</h1>
+<h1>Новости</h1>
 
 <form method="get">
     <div>
@@ -28,7 +28,7 @@
     </div>
 </form>
 
-@if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Create)).Result.Succeeded)
+@if (User.IsInRole(AppRoles.Moderator) | User.IsInRole(AppRoles.Administrator) | User.IsInRole(AppRoles.Redactor))
 {
     <p>
         <a asp-action="Create">Create New</a>
@@ -51,7 +51,11 @@
 @foreach (var item in Model.News) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                  <a asp-action="Details" 
+                  asp-controller="News" 
+                  asp-route-id="@item.NewsId" 
+                  asp-route-urlReturn="@pathAndQuery" 
+                >@Html.DisplayFor(modelItem => item.Title)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreationDate)
@@ -69,10 +73,12 @@
                     class="btn btn-light">Написать комментарии</a>
             </td>
             <td>
-                    <a asp-action="Edit" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-light">Изменить</a>
-                    <a asp-action="Details" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-light">Подробнее</a>
-                    <a asp-action="Delete" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-danger">Удалить</a>
-            </td>
+                    @if (User.IsInRole(AppRoles.Moderator) | User.IsInRole(AppRoles.Administrator) | User.IsInRole(AppRoles.Redactor))
+                    {
+                        <a asp-action="Edit" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-light">Изменить</a>
+                        <a asp-action="Delete" asp-controller="News" asp-route-id="@item.NewsId" asp-route-urlReturn="@pathAndQuery" class="btn btn-danger">Удалить</a>
+                    }
+                </td>
         </tr>
 }
     </tbody>
