@@ -142,10 +142,12 @@ namespace SuperNews.Controllers
         [HttpPost]
         public IActionResult Create(NewsViewModel model)
         {
-            UploadImage(model);
+            
 
             if (ModelState.IsValid)
             {
+                UploadImage(model);
+
                 News article = new News()
                 {
                     NewsId = model.NewsId,
