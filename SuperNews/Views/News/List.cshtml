@@ -51,22 +51,14 @@
         <a asp-action="Create">Create New</a>
     </p>
 }
-<table>
-    <thead>
-        <tr>
-            <th>
-                Название новости
-            </th>
-            <th>
-                Дата создания новости
-            </th>
-            <th> </th>
-            <th> </th>
-        </tr>
-    </thead>
+<table class="table">
     <tbody>
 @foreach (var item in Model.News) {
         <tr>
+                <td>
+                    <img width="100" height="100"
+                         src="~/NewsImages/@item.ImageUrl" />
+                </td>
             <td>
                   <a asp-action="Details" 
                   asp-controller="News" 
