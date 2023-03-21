@@ -15,18 +15,35 @@
 }
 
 <h1>Новости</h1>
+<div id="accordion">
+    <div >
+      
+            <h5 class="mb-0">
+                <button class="btn btn-light" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Поиск по названию и по рубрикам
+                </button>
+            </h5>
 
-<form method="get">
-    <div>
-        <label>Имя: </label>
-        <input asp-for="Name" />
 
-        <label>Компания: </label>
-        <select name="Rubric" asp-items="Model.Rubrics"></select>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <form method="get">
+                    <div class="form-group">
+                        <label>Имя: </label>
+                        <input asp-for="Name" class="form-control" id="exampleFormControlInput1" />
 
-        <input type="submit" value="Поиск" />
+                        <label>Компания: </label>
+                        <select name="Rubric" asp-items="Model.Rubrics" class="form-control" id="exampleFormControlSelect1"></select>
+
+                        <input type="submit" value="Поиск" class="btn btn-primary" style="margin-top: 10px" />
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</form>
+</div>
+
+
 
 @if (User.IsInRole(AppRoles.Moderator) | User.IsInRole(AppRoles.Administrator) | User.IsInRole(AppRoles.Redactor))
 {
@@ -34,7 +51,7 @@
         <a asp-action="Create">Create New</a>
     </p>
 }
-<table class="table">
+<table>
     <thead>
         <tr>
             <th>
